@@ -1,0 +1,51 @@
+name: 'Cleanup old releases from target server'
+description: 'SSH into the target server and delete old releases leaving only newest ones. Provide absolute path and the number of releases to retain'
+
+inputs:
+  ssh_user:
+    description: 'SSH user account'
+    required: true
+  ssh_host:
+    description: 'SSH host server'
+    required: true
+  ssh_key:
+    description: 'SSH private key'
+    required: true
+  cleanup_dir:
+    description: 'Absolute path to directory where releases are stored'
+    required: true
+  pattern:
+    description: 'Directory naming pattern to cleanup'
+    default: 'release-*'
+  retain:
+    description: 'Number of newest releases to retain. Older will be deleted'
+    default: 3
+
+runs:
+  using: "composite"
+  steps:
+    - name: 'Configure SSH'
+      run: |
+        mkdir -p ~/.ssh/
+        echo "$SSH_KEY" > ~/.ssh/server.key
+        chmod 600 ~/.ssh/server.key
+        cat > ~/.ssh/config <<END
+        Host server
+          HostName $SSH_HOST
+          User $SSH_USER
+          IdentityFile ~/.ssh/server.key
+          StrictHostKeyChecking no
+        END
+      env:
+        SSH_USER: ${{ inputs.ssh_user }}
+        SSH_HOST: ${{ inputs.ssh_host }}
+        SSH_KEY: ${{ inputs.ssh_key }}
+      shell: bash
+
+    - name: 'Download and run the cleanup script'
+      run: >
+        ssh server 'cd ${{ inputs.cleanup_dir }}
+         && curl -o cleanup.sh https://raw.githubusercontent.com/eaudeweb/drupal-cleanup-action/1.x/cleanup.sh
+         && chmod +x cleanup.sh
+         && ./cleanup.sh "${{ inputs.pattern }}" ${{ inputs.retain }}'
+      shell: bash
