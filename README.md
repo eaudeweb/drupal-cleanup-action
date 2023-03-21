@@ -1,6 +1,6 @@
-# drupal-cleanup-action
+# Directory cleanup action
 
-SSH into a remote server and cleanup older deployments (directories) with defined pattern. Preserve only the newest number of configured directories.
+This action does a SSH into a remote server and cleans up older deployments (directories) with a pre-defined pattern. Preserve only the newest number of configured directories.
 
 Usage:
 

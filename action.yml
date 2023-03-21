@@ -19,7 +19,7 @@ inputs:
     default: 'release-*'
   retain:
     description: 'Number of newest releases to retain. Older will be deleted'
-    default: 3
+    default: 5
 
 runs:
   using: "composite"
