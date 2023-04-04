@@ -1,22 +1,28 @@
 #!/bin/sh
 
 rm -rf release-* dir-*
-mkdir release-001 release-002 release-003 release-004 release-005 release-006 release-007
+mkdir -p release-001/web/core/modules/update/tests/fixtures/release-history
+mkdir -p release-002/web/core/modules/update/tests/fixtures/release-history
+mkdir -p release-003/web/core/modules/update/tests/fixtures/release-history
+mkdir -p release-004/web/core/modules/update/tests/fixtures/release-history
+mkdir -p release-005/web/core/modules/update/tests/fixtures/release-history
+mkdir -p release-006/web/core/modules/update/tests/fixtures/release-history
+mkdir -p release-007/web/core/modules/update/tests/fixtures/release-history
 
 set -e
 
-touch -t `date +%y%m%d%H%M.%S` 				release-001
-touch -t `date +%y%m%d%H%M.%S -d "-1 hour"`	release-002
-touch -t `date +%y%m%d%H%M.%S -d "-1 day"`	release-003
-touch -t `date +%y%m%d%H%M.%S -d "-2 day"`	release-004
-touch -t `date +%y%m%d%H%M.%S -d "-3 day"` 	release-005
-touch -t `date +%y%m%d%H%M.%S -d "-4 day"` 	release-006
-touch -t `date +%y%m%d%H%M.%S -d "-5 day"` 	release-007
+touch -t `date +%y%m%d%H%M.%S`              release-001
+touch -t `date +%y%m%d%H%M.%S -d "-1 hour"` release-002
+touch -t `date +%y%m%d%H%M.%S -d "-1 day"`  release-003
+touch -t `date +%y%m%d%H%M.%S -d "-2 day"`  release-004
+touch -t `date +%y%m%d%H%M.%S -d "-3 day"`  release-005
+touch -t `date +%y%m%d%H%M.%S -d "-4 day"`  release-006
+touch -t `date +%y%m%d%H%M.%S -d "-5 day"`  release-007
 
 mkdir dir-001 dir-002 dir-003 dir-004
-touch -t `date +%y%m%d%H%M.%S -d "-1 hour"`	dir-002
-touch -t `date +%y%m%d%H%M.%S -d "-1 day"`	dir-003
-touch -t `date +%y%m%d%H%M.%S -d "-2 day"`	dir-004
+touch -t `date +%y%m%d%H%M.%S -d "-1 hour"` dir-002
+touch -t `date +%y%m%d%H%M.%S -d "-1 day"`  dir-003
+touch -t `date +%y%m%d%H%M.%S -d "-2 day"`  dir-004
 
 ../cleanup.sh "release-*" 5
 

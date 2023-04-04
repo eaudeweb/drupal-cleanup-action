@@ -65,7 +65,7 @@ fi
 
 echo "Cleanup $pattern, leaving only the newest $leave directories:"
 
-directories=$(find . -type d ! -path . -name "$pattern" -printf "%T@ %p\n" | sort -rn | cut -d" " -f2)
+directories=$(find . -maxdepth 1 -type d ! -path . -name "$pattern" -printf "%T@ %p\n" | sort -rn | cut -d" " -f2)
 
 skip=0
 for i in $directories; do
