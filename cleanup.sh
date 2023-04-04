@@ -2,19 +2,60 @@
 
 # Delete a pattern of directories from the current directory leaving only the newest x folders
 
-pattern=$1
-leave=$2
+set -e
+
+pattern=unset
+leave=unset
+remove=1
+
+usage()
+{
+  echo "Usage: ./cleanup.sh [ -s | --simulate ] <pattern> <x>
+
+Options:
+    -s | --simulate  - Do not delete anything, just output
+
+
+    <pattern>        - Delete the folders starting with this pattern (use \"\")
+    x                - number of newest folders to retain
+
+Examples:
+	./cleanup.sh \"release-\" 5     - Delete old folders starting with release-
+	                                and leave the newest 5
+	./cleanup.sh -s \"release-\" 2  - Show what folders would be deleted
+"
+  exit 2
+}
+
+
+PARSED_ARGS=$(getopt -a -n cleanup.sh -o s --long simulate -- "$@")
+eval set -- "$PARSED_ARGS"
+
+VALID_ARGUMENTS=$?
+if [ "$VALID_ARGUMENTS" != "0" ]; then
+  usage
+fi
+
+while :
+do
+  case "$1" in
+    -s | --simulate)   remove=0  ; shift   ;;
+    --) shift; break ;;
+    *) echo "Unexpected option: $1"
+       usage ;;
+  esac
+done
+
+pattern="$1"
+leave="$2"
+
+if [ "$remove" != "1" ]; then
+	echo "WARNING! SIMULATION, nothing will be deleted"
+fi
 
 if [ $# -ne 2 ]; then
-	echo "Usage: ./cleanup.sh <pattern> <x>"
-	echo ""
-	echo "where:"
-	echo "    <pattern> a directory pattern"
-	echo "    <x> - a number of newest folders to leave, must be >= 1"
-	echo ""
-	echo 'Example: ./cleanup.sh "release-*" 3'
-	echo "    Delete all directories starting with release- and leave only the newest 3"
-	exit 1
+	usage
+	exit 2
 fi
 
 if [ ! $leave -ge 1 ]; then
@@ -31,7 +72,10 @@ for i in $directories; do
 	skip=$((skip+1))
 	if [ $skip -gt $leave ]; then
 		echo "    * Deleting $i"
-		rm -rf "$i"
+		if [ "$remove" = "1" ]; then
+			echo "    * Real deleting $i"
+			rm -rf "$i"
+		fi
 	fi
 done
 
