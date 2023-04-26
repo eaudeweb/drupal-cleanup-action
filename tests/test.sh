@@ -19,12 +19,20 @@ touch -t `date +%y%m%d%H%M.%S -d "-3 day"`  release-005
 touch -t `date +%y%m%d%H%M.%S -d "-4 day"`  release-006
 touch -t `date +%y%m%d%H%M.%S -d "-5 day"`  release-007
 
+touch -t `date +%y%m%d%H%M.%S`              database-before-release-001.sql.gz
+touch -t `date +%y%m%d%H%M.%S -d "-1 hour"` database-before-release-002.sql.gz
+touch -t `date +%y%m%d%H%M.%S -d "-1 day"`  database-before-release-003.sql.gz
+touch -t `date +%y%m%d%H%M.%S -d "-2 day"`  database-before-release-004.sql.gz
+touch -t `date +%y%m%d%H%M.%S -d "-3 day"`  database-before-release-005.sql.gz
+touch -t `date +%y%m%d%H%M.%S -d "-4 day"`  database-before-release-006.sql.gz
+touch -t `date +%y%m%d%H%M.%S -d "-5 day"`  database-before-release-007.sql.gz
+
 mkdir dir-001 dir-002 dir-003 dir-004
 touch -t `date +%y%m%d%H%M.%S -d "-1 hour"` dir-002
 touch -t `date +%y%m%d%H%M.%S -d "-1 day"`  dir-003
 touch -t `date +%y%m%d%H%M.%S -d "-2 day"`  dir-004
 
-../cleanup.sh "release-*" 5
+../cleanup.sh "*release-*" 5
 
 if [ ! -d "release-001" ]; then
  echo "Directory release-001 not found ... fail"
@@ -64,6 +72,45 @@ if [ -d "release-007" ]; then
 fi
 
 ###
+
+if [ ! -f "database-before-release-001.sql.gz" ]; then
+ echo "File database-before-release-001.sql.gz not found ... fail"
+ exit 3
+fi
+
+if [ ! -f "database-before-release-002.sql.gz" ]; then
+ echo "File database-before-release-002.sql.gz not found ... fail"
+ exit 3
+fi
+
+if [ ! -f "database-before-release-003.sql.gz" ]; then
+ echo "File database-before-release-003.sql.gz not found ... fail"
+ exit 3
+fi
+
+if [ ! -f "database-before-release-004.sql.gz" ]; then
+ echo "File database-before-release-004.sql.gz not found ... fail"
+ exit 3
+fi
+
+if [ ! -f "database-before-release-005.sql.gz" ]; then
+ echo "File database-before-release-005.sql.gz not found ... fail"
+ exit 3
+fi
+
+###
+
+if [ -f "database-before-release-006.sql.gz" ]; then
+ echo "File database-before-release-006.sql.gz found ... fail"
+ exit 3
+fi
+
+if [ -f "database-before-release-007.sql.gz" ]; then
+ echo "File database-before-release-007.sql.gz found ... fail"
+ exit 3
+fi
+
+##
 
 if [ ! -d "dir-001" ]; then
  echo "Directory dir-001 not found ... fail"
