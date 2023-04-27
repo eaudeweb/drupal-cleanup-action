@@ -98,4 +98,4 @@ done
 echo "Done."
 echo "-------"
 echo "Remaining files and directories:"
-ls -d $pattern
+ls --group-directories-first -ltdog $pattern
