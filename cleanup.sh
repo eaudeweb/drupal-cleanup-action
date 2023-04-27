@@ -97,5 +97,5 @@ done
 
 echo "Done."
 echo "-------"
-echo "Remaining directories:"
+echo "Remaining files and directories:"
 ls -d $pattern
