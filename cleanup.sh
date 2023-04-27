@@ -79,7 +79,23 @@ for i in $directories; do
 	fi
 done
 
+echo "Cleanup $pattern, leaving only the newest $leave files:"
+
+files=$(find . -maxdepth 1 -type f ! -path . -name "$pattern" -printf "%T@ %p\n" | sort -rn | cut -d" " -f2)
+
+skip=0
+for i in $files; do
+	skip=$((skip+1))
+	if [ $skip -gt $leave ]; then
+		echo "    * Deleting $i"
+		if [ "$remove" = "1" ]; then
+			echo "    * Real deleting $i"
+			rm -rf "$i"
+		fi
+	fi
+done
+
 echo "Done."
 echo "-------"
-echo "Remaining directories:"
-ls -lt .|grep "$pattern"
+echo "Remaining files and directories:"
+ls --group-directories-first -ltdog $pattern

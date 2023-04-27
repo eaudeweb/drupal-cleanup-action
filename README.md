@@ -12,6 +12,8 @@ Usage:
           ssh_host:             ${{ secrets.TEST_SSH_HOST }}
           ssh_key:              ${{ secrets.TEST_SSH_KEY }}
           cleanup_dir:          /var/www/artifacts/example.org
-          pattern:              release-*
+          pattern:              *release-*
           retain:               5
 ```
+
+**Caveat**: When target directory contains other directories containing the pattern (e.g. `custom-release-backup`) cleanup won't work properly.
