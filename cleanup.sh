@@ -98,4 +98,4 @@ done
 echo "Done."
 echo "-------"
 echo "Remaining directories:"
-ls -lt .|grep "$pattern"
+ls -d $pattern
