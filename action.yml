@@ -16,7 +16,7 @@ inputs:
     required: true
   pattern:
     description: 'Directory naming pattern to cleanup'
-    default: 'release-*'
+    default: '*release-*'
   retain:
     description: 'Number of newest releases to retain. Older will be deleted'
     default: 5
