@@ -11,6 +11,14 @@ inputs:
   ssh_key:
     description: 'SSH private key'
     required: true
+  ssh_user_jumphost:
+    description: 'SSH user account for jumphost'
+    required: false
+    default: ''
+  ssh_host_jumphost:
+    description: 'SSH host server for jumphost'
+    required: false
+    default: ''
   cleanup_dir:
     description: 'Absolute path to directory where releases are stored'
     required: true
@@ -25,6 +33,7 @@ runs:
   using: "composite"
   steps:
     - name: 'Configure SSH'
+      if:  ${{ inputs.ssh_host_jumphost == '' }}
       run: |
         mkdir -p ~/.ssh/
         echo "$SSH_KEY" > ~/.ssh/server.key
@@ -40,6 +49,31 @@ runs:
         SSH_USER: ${{ inputs.ssh_user }}
         SSH_HOST: ${{ inputs.ssh_host }}
         SSH_KEY: ${{ inputs.ssh_key }}
+      shell: bash
+
+    - name: 'Configure SSH'
+      if:  ${{ inputs.ssh_host_jumphost != '' }}
+      run: |
+        mkdir -p ~/.ssh/
+        echo "$SSH_KEY" > ~/.ssh/server.key
+        chmod 600 ~/.ssh/server.key
+        cat > ~/.ssh/config <<END
+        Host jumphost
+          HostName $SSH_HOST_JUMPHOST
+          User $SSH_USER_JUMPHOST
+          IdentityFile ~/.ssh/server.key
+          StrictHostKeyChecking no
+        Host server
+          HostName $SSH_HOST
+          User $SSH_USER
+          ProxyJump jumphost
+        END
+      env:
+        SSH_USER: ${{ inputs.ssh_user }}
+        SSH_HOST: ${{ inputs.ssh_host }}
+        SSH_KEY: ${{ inputs.ssh_key }}
+        SSH_USER_JUMPHOST: ${{ inputs.ssh_user_jumphost }}
+        SSH_HOST_JUMPHOST: ${{ inputs.ssh_host_jumphost }}
       shell: bash
 
     - name: 'Download and run the cleanup script'
