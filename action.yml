@@ -63,6 +63,7 @@ runs:
           User $SSH_USER_JUMPHOST
           IdentityFile ~/.ssh/server.key
           StrictHostKeyChecking no
+          LogLevel QUIET
         Host server
           HostName $SSH_HOST
           User $SSH_USER
