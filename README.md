@@ -11,6 +11,8 @@ Usage:
           ssh_user:             ${{ secrets.TEST_SSH_USER }}
           ssh_host:             ${{ secrets.TEST_SSH_HOST }}
           ssh_key:              ${{ secrets.TEST_SSH_KEY }}
+          ssh_user_jumphost:    ${{ secrets.TEST_SSH_USER_JUMPHOST }}
+          ssh_host_jumphost:    ${{ secrets.TEST_SSH_HOST_JUMPHOST }}
           cleanup_dir:          /var/www/artifacts/example.org
           pattern:              *release-*
           retain:               5
