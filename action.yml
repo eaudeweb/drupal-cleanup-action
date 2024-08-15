@@ -67,8 +67,9 @@ runs:
         Host server
           HostName $SSH_HOST
           User $SSH_USER
-          ProxyJump jumphost
+          IdentityFile ~/.ssh/server.key
           StrictHostKeyChecking no
+          ProxyJump jumphost
         END
       env:
         SSH_USER: ${{ inputs.ssh_user }}
