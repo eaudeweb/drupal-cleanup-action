@@ -84,5 +84,5 @@ runs:
           ssh server 'cd ${{ inputs.cleanup_dir }}
           && curl -o cleanup.sh https://raw.githubusercontent.com/eaudeweb/drupal-cleanup-action/1.x/cleanup.sh
           && chmod +x cleanup.sh
-          && ./cleanup.sh "${{ inputs.pattern }}" ${{ inputs.retain }}'
+          && ./cleanup.sh "${{ inputs.pattern }}" ${{ inputs.retain || 5 }}'
       shell: bash
